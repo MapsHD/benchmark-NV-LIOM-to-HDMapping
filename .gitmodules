@@ -1,0 +1,9 @@
+[submodule "src/nv_liom"]
+	path = src/nv_liom
+	url = https://github.com/dhchung/nv_liom.git
+[submodule "src/nv-liom-to-hdmapping/src/3rdparty/LASzip"]
+	path = src/nv-liom-to-hdmapping/src/3rdparty/LASzip
+	url = https://github.com/LASzip/LASzip.git
+[submodule "src/livox_ros_driver"]
+	path = src/livox_ros_driver
+	url = https://github.com/Livox-SDK/livox_ros_driver.git
