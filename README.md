@@ -24,11 +24,17 @@ cd ~/hdmapping-benchmark/data
 ~/hdmapping-benchmark/benchmark-NV-LIOM-to-HDMapping/docker_session_run-ros1-nv-liom.sh reg-1.bag-pc.bag .
 ```
 
-## Step 4 (Open and visualize data)
-Expected data should appear in ~/hdmapping-benchmark/data/output_hdmapping-nv-liom
-Use tool [multi_view_tls_registration_step_2](https://github.com/MapsHD/HDMapping) to open session.json from ~/hdmapping-benchmark/data/output_hdmapping-nv-liom.
+NV-LIOM mapping the bunker in RViz during the run:
 
-You should see following data in folder '~/hdmapping-benchmark/data/output_hdmapping-nv-liom'
+![NV-LIOM in RViz](images/RViz.png)
+
+## Step 4 (Open and visualize data)
+Expected data should appear in ~/hdmapping-benchmark/data/output_hdmapping-NV-LIOM
+Use tool [multi_view_tls_registration_step_2](https://github.com/MapsHD/HDMapping) to open session.json from ~/hdmapping-benchmark/data/output_hdmapping-NV-LIOM.
+
+![NV-LIOM session in multi_view_tls_registration_step_2](images/step2.png)
+
+You should see following data in folder '~/hdmapping-benchmark/data/output_hdmapping-NV-LIOM'
 
 lio_initial_poses.reg
 
