@@ -1,10 +1,16 @@
 <launch>
-    <!-- Benchmark launch for NV-LIOM on the Bunker DVI dataset: the relay that
-         feeds NV-LIOM the IMU in m/s^2 (see src/imu_g_to_ms2.cpp), then
-         NV-LIOM's own, unmodified run.launch. -->
+    <!-- Benchmark launch for NV-LIOM on the Bunker DVI dataset: two relays that
+         adapt the Mid-360 data (see src/imu_g_to_ms2.cpp and
+         src/livox_frame_merger.cpp), then NV-LIOM's own, unmodified run.launch. -->
     <node pkg="nv-liom-to-hdmapping" type="imu_g_to_ms2" name="imu_g_to_ms2" output="screen">
         <param name="input_topic" value="/livox/imu" />
         <param name="output_topic" value="/livox/imu_ms2" />
+    </node>
+
+    <node pkg="nv-liom-to-hdmapping" type="livox_frame_merger" name="livox_frame_merger" output="screen">
+        <param name="input_topic" value="/livox/pointcloud" />
+        <param name="output_topic" value="/livox/pointcloud_merged" />
+        <param name="frame_duration" value="0.149" />
     </node>
 
     <include file="$(find nv_liom)/launch/run.launch" />
