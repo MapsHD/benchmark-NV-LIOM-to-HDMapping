@@ -40,8 +40,6 @@ session.json
 
 trajectory_lio_*.csv
 
-## Movie
-[[movie]]()
 
 ## Contact email
 januszbedkowski@gmail.com

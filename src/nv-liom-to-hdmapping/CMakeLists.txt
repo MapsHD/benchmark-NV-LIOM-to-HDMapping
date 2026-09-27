@@ -66,6 +66,11 @@ target_link_libraries(listener
   ${catkin_LIBRARIES} Eigen3::Eigen laszip ${catkin_LIBRARIES}
 )
 
+## IMU relay feeding NV-LIOM accelerations in m/s^2 (see src/imu_g_to_ms2.cpp)
+add_executable(imu_g_to_ms2 src/imu_g_to_ms2.cpp)
+add_dependencies(imu_g_to_ms2 ${catkin_EXPORTED_TARGETS})
+target_link_libraries(imu_g_to_ms2 ${catkin_LIBRARIES})
+
 
 else()
   message("catkin not found so skipping this package")

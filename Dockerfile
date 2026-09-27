@@ -66,10 +66,15 @@ WORKDIR /ros_ws
 
 COPY ./src ./src
 
+# NV-LIOM reads its IMU from /livox/imu_ms2, published by the benchmark's
+# imu_g_to_ms2 relay (nv-liom-to-hdmapping package, started by
+# nv_liom_benchmark.launch): the Bunker DVI IMU reports acceleration in g and
+# NV-LIOM expects m/s^2.
 RUN sed -i \
     -e 's|/ouster/points|/livox/pointcloud|g' \
-    -e 's|/ouster/imu|/livox/imu|g' \
-    src/nv_liom/config/params_os1_64.yaml
+    -e 's|/ouster/imu|/livox/imu_ms2|g' \
+    src/nv_liom/config/params_os1_64.yaml && \
+    grep -q 'imuTopic: "/livox/imu_ms2"' src/nv_liom/config/params_os1_64.yaml
 
 RUN source /opt/ros/noetic/setup.bash && \
     catkin_make
