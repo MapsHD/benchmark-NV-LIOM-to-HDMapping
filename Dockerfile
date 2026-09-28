@@ -66,10 +66,25 @@ WORKDIR /ros_ws
 
 COPY ./src ./src
 
+# NV-LIOM reads the Mid-360 through two relays of the benchmark's
+# nv-liom-to-hdmapping package, started by nv_liom_benchmark.launch:
+#  - /livox/imu_ms2 from imu_g_to_ms2: the Bunker DVI IMU reports acceleration
+#    in g and NV-LIOM expects m/s^2;
+#  - /livox/pointcloud_merged from livox_frame_merger: 0.149 s frames with
+#    per-point times in NV-LIOM's Ouster point layout.
+# The range image's vertical window is set to the Mid-360's field of view
+# (-8..+53 deg measured in reg-1) instead of the Ouster OS1-64's +-22.5 deg;
+# its size (64 x 1024) is kept.
 RUN sed -i \
-    -e 's|/ouster/points|/livox/pointcloud|g' \
-    -e 's|/ouster/imu|/livox/imu|g' \
-    src/nv_liom/config/params_os1_64.yaml
+    -e 's|/ouster/points|/livox/pointcloud_merged|g' \
+    -e 's|/ouster/imu|/livox/imu_ms2|g' \
+    -e 's|vertical_max: 22.5|vertical_max: 53.0|' \
+    -e 's|vertical_min: -22.5|vertical_min: -8.0|' \
+    src/nv_liom/config/params_os1_64.yaml && \
+    grep -q 'lidarTopic: "/livox/pointcloud_merged"' src/nv_liom/config/params_os1_64.yaml && \
+    grep -q 'imuTopic: "/livox/imu_ms2"' src/nv_liom/config/params_os1_64.yaml && \
+    grep -q 'vertical_max: 53.0' src/nv_liom/config/params_os1_64.yaml && \
+    grep -q 'vertical_min: -8.0' src/nv_liom/config/params_os1_64.yaml
 
 RUN source /opt/ros/noetic/setup.bash && \
     catkin_make

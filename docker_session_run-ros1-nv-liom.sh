@@ -74,7 +74,7 @@ docker run -it --rm \
     tmux send-keys -t '"$TMUX_SESSION"' '\''sleep 5
 source /opt/ros/noetic/setup.bash
 source /ros_ws/devel/setup.bash
-roslaunch nv_liom run.launch use_sim_time:=true
+roslaunch nv-liom-to-hdmapping nv_liom_benchmark.launch
 '\'' C-m
 
     # ---------- PANEL 2: rosbag record ----------
@@ -88,10 +88,16 @@ echo "[record] exit"
 '\'' C-m
 
     # ---------- PANEL 3: rosbag play ----------
+    # Play only once the IMU relay is up and NV-LIOM mapping node is subscribed
+    # to it. NV-LIOM mapping node hangs if a point cloud reaches it before its
+    # first IMU sample, which a late IMU connection could cause.
     tmux split-window -h -t '"$TMUX_SESSION"'
     tmux send-keys -t '"$TMUX_SESSION"' '\''sleep 8
 source /opt/ros/noetic/setup.bash
 source /ros_ws/devel/setup.bash
+echo "[play] waiting for imu_g_to_ms2 and nv_lidar_inertial_mapping_node on /livox/imu_ms2"
+until rostopic info /livox/imu_ms2 2>/dev/null | grep -q imu_g_to_ms2 && rostopic info /livox/imu_ms2 2>/dev/null | grep -q nv_lidar_inertial_mapping_node; do sleep 1; done
+sleep 2
 echo "[play] start"
 rosbag play '"$DATASET_CONTAINER_PATH"' --clock; tmux wait-for -S BAG_DONE;
 echo "[play] done"
