@@ -67,8 +67,8 @@ WORKDIR /ros_ws
 COPY ./src ./src
 
 RUN sed -i \
-    -e 's|/ouster/points|/livox/pointcloud|g' \
-    -e 's|/ouster/imu|/livox/imu|g' \
+    -e 's|/ouster/points|/velodyne_points|g' \
+    -e 's|/ouster/imu|/imu/data|g' \
     src/nv_liom/config/params_os1_64.yaml
 
 RUN source /opt/ros/noetic/setup.bash && \
